@@ -25,6 +25,49 @@
         button.close-popup{background:#ff3b57;color:white;border:none;padding:10px;border-radius:5px;cursor:pointer;}
         button.close-popup:hover{background:#ff6b81;}
         @media(max-width:600px){#app{padding:20px}h1{font-size:24px}}
+
+        #warning-popup {
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 90%; /* Limit max width to 90% on mobile */
+    margin: auto; /* Center it */
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+#warning-popup h2 {
+    font-size: 24px;
+}
+
+#warning-popup p, 
+#warning-popup ul {
+    font-size: 16px;
+}
+
+#warning-popup button {
+    width: 100%; /* Full-width button on mobile */
+    padding: 10px;
+    font-size: 18px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    #warning-popup h2 {
+        font-size: 20px;
+    }
+
+    #warning-popup p, 
+    #warning-popup ul {
+        font-size: 14px;
+    }
+
+    #warning-popup button {
+        font-size: 16px;
+    }
+}
+
     </style>
 </head>
 <body>
