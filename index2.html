@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Get ST Number</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #ffffff; /* Light text */
+            padding: 20px;
+        }
+
+        .container {
+            background: #1e1e1e; /* Darker container background */
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            font-weight: bold;
+            color: #ffffff; /* Light text */
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+            background: #333333; /* Dark input background */
+            color: #ffffff; /* Light text */
+            border: 1px solid #444; /* Dark border */
+        }
+
+        .form-control:focus {
+            background: #444444; /* Darker focus background */
+            color: #ffffff; /* Light text */
+            border-color: #007bff; /* Blue focus border */
+        }
+
+        #marks-list-body {
+            margin-top: 20px;
+            background: #2c2c2c; /* Dark background for output section */
+            color: #ffffff; /* Light text */
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #ffffff; /* Light text */
+        }
+
+        /* Floating Action Button styles */
+        .floating-container {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .floating-button {
+            width: 60px;
+            height: 60px;
+            background: #007bff; /* Blue button */
+            border-radius: 50%;
+            color: white;
+            line-height: 60px;
+            text-align: center;
+            font-size: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            transition: background 0.3s;
+        }
+
+        .floating-button:hover {
+            background: #0056b3; /* Darker blue on hover */
+        }
+
+        .element-container {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+        }
+
+        .float-element {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            margin: 10px 0;
+            transition: opacity 0.3s;
+        }
+
+        .float-element:hover {
+            opacity: 0.8;
+        }
+
+        .float-element:nth-child(1) { background: midnightblue; }
+        .float-element:nth-child(2) { background: green; }
+        .float-element:nth-child(3) { background: red; }
+
+        /* Custom styles for the modal */
+        .modal-content {
+            background-color: #1e1e1e; /* Match modal background to theme */
+            color: #ffffff; /* Light text for modal */
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #444; /* Dark border for header */
+        }
+
+        .modal-footer {
+            border-top: 1px solid #444; /* Dark border for footer */
+        }
+
+        .modal-title {
+            color: #ffffff; /* Light title */
+        }
+
+        .btn-danger {
+            background-color: #d9534f; /* Bootstrap danger color */
+            border-color: #d9534f; /* Darker border */
+        }
+
+        .btn-danger:hover {
+            background-color: #c9302c; /* Darker on hover */
+            border-color: #ac2925; /* Darker border on hover */
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Update Roll No.</h2>
+
+        <input type="hidden" name="user_type" id="user_type" value="">
+        <input type="hidden" name="userId" id="userId" value="">
+        <input type="hidden" name="unique_id" id='unique_id' value="">
+
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <select class="form-control" id="Medium" onchange="getExamStd()">
+                    <option value="English">English</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <select class="form-control" id="Standard" onchange="getExamSection()">
+                    <option>Select Standard</option>
+                    <option value="XI-PCM-C">XI-PCM-C</option>
+                    <option value="XII-PCB-C">XII-PCB-C</option>
+                    <option value="XI-Commerce-IP">XI-Commerce-IP</option>
+                    <option value="XI-PCM-E">XI-PCM-E</option>
+                    <option value="XII-PCB-E">XII-PCB-E</option>
+                    <option value="UKG">UKG</option>
+                    <option value="XI-PCB-C">XI-PCB-C</option>
+                    <option value="XII-PCM-C">XII-PCM-C</option>
+                    <option value="LKG">LKG</option>
+                    <option value="Removed">Removed</option>
+                    <option value="TC">TC</option>
+                    <option value="XI-PCB-E">XI-PCB-E</option>
+                    <option value="XII-Commerce-IP">XII-Commerce-IP</option>
+                    <option value="XII-PCM-E">XII-PCM-E</option>
+                    <option value="nursery">nursery</option>
+                    <option value="first">first</option>
+                    <option value="second">second</option>
+                    <option value="third">third</option>
+                    <option value="fourth">fourth</option>
+                    <option value="fifth">fifth</option>
+                    <option value="sixth">sixth</option>
+                    <option value="seventh">seventh</option>
+                    <option value="eighth">eighth</option>
+                    <option value="ninth">ninth</option>
+                    <option value="tenth">tenth</option>
+                    <option value="XI-Commerce">XI-Commerce</option>
+                    <option value="XII-Commerce">XII-Commerce</option>
+                    <option value="Mr.dextro">Mr.dextro</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <select class="form-control" id="Section" onchange="getStudentList()">
+                    <option>Select Section</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="marks-list-body"></div>
+        <div id="loading" class="loading">Loading...</div>
+        <div id="error-message" style="color: red; display: none;"></div>
+
+    </div>
+
+    <!-- Warning Modal -->
+    <div class="modal fade" id="warningModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Warning</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>This site may contain sensitive content related to school data. Please proceed with caution and ensure that you are authorized to access this information.</p>
+                    <p><strong>Tip:</strong> This website contains school data and should only be used for collecting information. It is intended for educational purposes only, and any misuse of this data is strictly prohibited. Please do not use this platform for non-educational activities or timepass.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $(".floating-button").click(function () {
+                $(".element-container").toggle();
+            });
+
+            // Show warning modal on page load
+            $('#warningModal').modal('show');
+        });
+
+        function getExamStd() {
+            var Medium = $("#Medium").val();
+            var user_type = $("#user_type").val();
+            var userId = $("#userId").val();
+            $("#loading").show();
+            $.ajax({
+                url: 'https://dextroexam.com/STFRANCISB/teacher-api/getStd.php',
+                method: 'POST',
+                datatype: 'json',
+                data: { Medium: Medium, user_type: user_type, userId: userId },
+                success: function (e) {
+                    $("#loading").hide();
+                    $("#Standard").html(e);
+                },
+                error: function () {
+                    $("#loading").hide();
+                    $("#error-message").text("Error fetching standards.").show();
+                }
+            });
+        }
+
+        function getExamSection() {
+            var Medium = $("#Medium").val();
+            var Standard = $("#Standard").val();
+            var user_type = $("#user_type").val();
+            var userId = $("#userId").val();
+            $("#loading").show();
+            $.ajax({
+                url: 'https://dextroexam.com/STFRANCISB/teacher-api/getSection.php',
+                method: 'POST',
+                datatype: 'json',
+                data: { Medium: Medium, Standard: Standard, user_type: user_type, userId: userId },
+                success: function (e) {
+                    $("#loading").hide();
+                    $("#Section").html(e);
+                },
+                error: function () {
+                    $("#loading").hide();
+                    $("#error-message").text("Error fetching sections.").show();
+                }
+            });
+        }
+
+        function getStudentList() {
+            var Medium = $("#Medium").val();
+            var Standard = $("#Standard").val();
+            var Section = $("#Section").val();
+            var unique_id = $("#unique_id").val();
+            $("#loading").show();
+            $.ajax({
+                url: 'https://dextroexam.com/STFRANCISB/teacher-api/db/upd_rollno.php',
+                method: 'POST',
+                datatype: 'json',
+                data: { Medium: Medium, Standard: Standard, Section: Section, unique_id: unique_id },
+                success: function (response) {
+                    $("#loading").hide();
+                    $("#marks-list-body").html(response);
+
+                    // Set Roll No. fields to read-only
+                    $("#marks-list-body input.roll-no").each(function() {
+                        $(this).attr("readonly", true);
+                    });
+                },
+                error: function () {
+                    $("#loading").hide();
+                    $("#error-message").text("Error fetching student list.").show();
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
