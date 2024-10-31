@@ -1,49 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Result Viewer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="description" content="View student results for 7th, 8th, and 9th standard. Secure and easy access to academic performance.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <script>
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap';
+        document.head.appendChild(link);
+    </script>
     <style>
-        body { font-family: 'Roboto', sans-serif; background-color: #121212; color: #e0e0e0; text-align: center; padding: 20px; margin: 0; }
-        #app { background: #1e1e1e; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); padding: 30px; max-width: 500px; margin: auto; transition: transform .2s; }
-        #app:hover { transform: scale(1.02); }
-        h1 { font-size: 28px; margin-bottom: 10px; color: #ff6b81; }
-        p { font-size: 16px; margin-bottom: 20px; color: #b0bec5; }
-        label { font-weight: bold; margin-top: 10px; display: block; color: #ff6b81; }
-        input, button { padding: 12px; margin: 10px 0; width: 100%; max-width: 350px; border: 2px solid #ff6b81; border-radius: 6px; font-size: 16px; background-color: #2c2c2c; color: #e0e0e0; transition: border-color .3s; }
-        input:focus { outline: none; border-color: #ff3b57; }
-        button { background-color: #ff6b81; color: white; cursor: pointer; border: none; font-weight: bold; }
-        button:hover { background-color: #ff3b57; }
-        #results-frame { margin-top: 20px; border: 2px solid #ff6b81; border-radius: 6px; padding: 15px; max-height: 300px; overflow-y: auto; text-align: left; background-color: #2c2c2c; color: #e0e0e0; }
-        .loading-spinner { display: none; text-align: center; margin-top: 10px; }
-        .spinner { width: 40px; height: 40px; border: 4px solid #ccc; border-top: 4px solid #ff6b81; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #warning-popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #1e1e1e; border: 2px solid #ff6b81; border-radius: 10px; padding: 20px; z-index: 1000; color: #e0e0e0; }
-        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 999; }
-        button.close-popup { background: #ff3b57; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
-        button.close-popup:hover { background: #ff6b81; }
-        @media (max-width: 600px) { #app { padding: 20px; } h1 { font-size: 24px; } }
+        body {
+            font-family: 'Itim', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+        h1 {
+            font-family: 'Itim', serif;
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #ff6b81;
+        }
+        header {
+            margin-bottom: 20px;
+        }
+        main {
+            background: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            max-width: 900px;
+            margin: auto;
+            transition: transform .2s;
+        }
+        main:hover {
+            transform: scale(1.02);
+        }
+        input, button {
+            padding: 12px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 350px;
+            border: 2px solid #ff6b81;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+            transition: border-color .3s;
+        }
+        button {
+            background-color: #ff6b81;
+            color: white;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+        #login-form {
+            display: block;
+            margin: auto;
+        }
+        #app {
+            display: none;
+        }
+        #results-frame {
+            margin-top: 20px;
+            border: 2px solid #ff6b81;
+            border-radius: 6px;
+            padding: 15px;
+            max-height: 800px;
+            overflow-y: auto;
+            text-align: left;
+            background-color: #ffffff;
+            color: #333333;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #b0bec5;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+        #warning-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e1e1e;
+            border: 2px solid #ff6b81;
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 1000;
+            color: #e0e0e0;
+            width: 90%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        button.close-popup {
+            background: #ff3b57;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button.close-popup:hover {
+            background: #ff6b81;
+        }
     </style>
 </head>
+
 <body>
-    <div id="app">
+    <header>
         <h1>View Student Results</h1>
-        <p>Only For 7<sup>th</sup>, 8<sup>th</sup>, and 9<sup>th</sup> Standard</p>
+        <p></p>
+    </header>
+
+    <div id="login-form">
+        <h2>Enter Password</h2>
+        <input type="password" id="password-input" placeholder="Enter Password" required>
+        <button id="login-btn">Login</button>
+    </div>
+
+    <main id="app">
         <form id="result-form">
             <label for="gr-num">Enter Gr_num:</label>
-            <input type="text" id="gr-num" placeholder="Enter Gr_num" required pattern="[A-Za-z0-9]{5,10}" title="5 to 10 alphanumeric characters">
+            <input type="text" id="gr-num" placeholder="Enter Gr_num" required pattern="[A-Za-z0-9]{5,10}"
+                title="5 to 10 alphanumeric characters">
             <button id="submit-btn" type="submit">Get Results</button>
         </form>
-        <button id="forget-st-number" style="margin-top: 10px; background-color: #ff6b81; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">Forget ST Number</button>
-        
-        <div class="loading-spinner" id="loading-spinner">
-            <p>Fetching results...</p>
-            <div class="spinner"></div>
-        </div>
+        <button id="forget-st-number" style="margin-top: 10px;">Forget ST Number</button>
         <div id="results-frame" role="alert" aria-live="polite"></div>
-    </div>
+    </main>
+
     <div id="overlay"></div>
     <div id="warning-popup">
         <h2>Warning!</h2>
@@ -59,110 +166,105 @@
         <p><strong>Important Tips:</strong></p>
         <ul style="text-align: left;">
             <li>This site uses the school server to access student data.</li>
-            <li>Your IP address: "<span id="user-ip"></span>" will be logged.</li>
+            <li>Your IP address will be logged.</li>
             <li>Always use your own credentials and respect the privacy of others.</li>
             <li>Avoid sharing sensitive information on this platform.</li>
         </ul>
         <button class="close-popup" onclick="closePopup()">Close</button>
     </div>
 
-    <script>
-        function fetchUserIP() {
-            fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('user-ip').innerText = data.ip;
-                })
-                .catch(error => {
-                    console.error('Error fetching IP address:', error);
-                    document.getElementById('user-ip').innerText = 'Unable to retrieve IP';
-                });
-        }
+    <footer>
+        <p>&copy; 2024 Doraemon. All rights reserved.</p>
+        <p>Last Updated At: 31/10/2024 | 01:32 AM</p>
+    </footer>
 
-        fetchUserIP();
+    <script>
+        const correctPassword = "Granthik";
+        
+        document.getElementById('login-btn').addEventListener('click', () => {
+            const passwordInput = document.getElementById('password-input').value;
+            if (passwordInput === correctPassword) {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('warning-popup').style.display = 'block';
+            } else {
+                alert("Incorrect password. Access denied.");
+            }
+        });
 
         const resultsCache = {};
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('warning-popup').style.display = 'block';
+        
+        document.getElementById('result-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const grNum = document.getElementById('gr-num').value.trim();
+            const resultsFrame = document.getElementById('results-frame');
 
-            document.getElementById('submit-btn').addEventListener('click', (event) => {
-                event.preventDefault();
-                const grNum = document.getElementById('gr-num').value.trim();
-                const resultsFrame = document.getElementById('results-frame');
-                const loadingSpinner = document.getElementById('loading-spinner');
+            resultsFrame.innerHTML = "Fetching results...";
+            resultsCache[grNum] = resultsCache[grNum] || null;
 
-                loadingSpinner.style.display = 'block';
-                resultsFrame.innerHTML = 'Loading...';
+            if (resultsCache[grNum]) {
+                resultsFrame.innerHTML = resultsCache[grNum];
+                return;
+            }
 
-                if (resultsCache[grNum]) {
-                    resultsFrame.innerHTML = `<h2>Results:</h2><div>${resultsCache[grNum]}</div>`;
-                    loadingSpinner.style.display = 'none';
-                    return;
-                }
+            fetch(`https://dextroexam.com/STFRANCISB/API/profile.php?Gr_num=${grNum}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    const std = data.data.Std;
+                    const sec = data.data.Section;
+                    let examId;
 
-                fetch(`https://dextroexam.com/STFRANCISB/API/profile.php?Gr_num=${grNum}`)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok: ' + response.statusText);
-                        return response.json();
-                    })
-                    .then(data => {
-                        const std = data.data.Std;
-                        const sec = data.data.Section;
-                        let examId;
-
-                        if (std === 'ninth') {
-                            switch (sec) {
-                                case 'D': examId = '1173,1193,1203,1213'; break;
-                                case 'C': examId = '1172,1192,1202,1212'; break;
-                                case 'A': examId = '1170,1190,1200,1210'; break;
-                                case 'B': examId = '1171,1191,1201,1211'; break;
-                                default: throw new Error(`Section ${sec} not recognized for 9th standard.`);
-                            }
-                        } else if (std === 'seventh') {
-                            switch (sec) {
-                                case 'D': examId = '1073,1093,1103,1113'; break;
-                                case 'A': examId = '1070,1090,1100,1110'; break;
-                                case 'B': examId = '1071,1091,1101,1111'; break;
-                                case 'C': examId = '1072,1092,1102,1112'; break;
-                                default: throw new Error(`Section ${sec} not recognized for 7th standard.`);
-                            }
-                        } else if (std === 'eighth') {
-                            switch (sec) {
-                                case 'A': examId = '1120,1140,1150,1160'; break;
-                                case 'B': examId = '1121,1141,1151,1161'; break;
-                                case 'C': examId = '1122,1142,1152,1162'; break;
-                                case 'D': examId = '1123,1143,1153,1163'; break;
-                                default: throw new Error(`Section ${sec} not recognized for 8th standard.`);
-                            }
-                        } else {
-                            throw new Error('Results are only available for 7th, 8th, and 9th standard students.');
+                    if (std === 'ninth') {
+                        switch (sec) {
+                            case 'D': examId = '1173,1193,1203,1213'; break;
+                            case 'C': examId = '1172,1192,1202,1212'; break;
+                            case 'A': examId = '1170,1190,1200,1210'; break;
+                            case 'B': examId = '1171,1191,1201,1211'; break;
+                            default: throw new Error(`Section ${sec} not recognized for 9th standard.`);
                         }
+                    } else if (std === 'seventh') {
+                        switch (sec) {
+                            case 'D': examId = '1073,1093,1103,1113'; break;
+                            case 'A': examId = '1070,1090,1100,1110'; break;
+                            case 'B': examId = '1071,1091,1101,1111'; break;
+                            case 'C': examId = '1072,1092,1102,1112'; break;
+                            default: throw new Error(`Section ${sec} not recognized for 7th standard.`);
+                        }
+                    } else if (std === 'eighth') {
+                        switch (sec) {
+                            case 'A': examId = '1120,1140,1150,1160'; break;
+                            case 'B': examId = '1121,1141,1151,1161'; break;
+                            case 'C': examId = '1122,1142,1152,1162'; break;
+                            case 'D': examId = '1123,1143,1153,1163'; break;
+                            default: throw new Error(`Section ${sec} not recognized for 8th standard.`);
+                        }
+                    } else {
+                        throw new Error('Results are only available for 7th, 8th, and 9th standard students.');
+                    }
 
-                        const resultsUrl = `https://dextroexam.com/STFRANCISB/dextro2425/Admin/school/printAllresult.php?mdm=English&std=${std}&sec=${sec}&examId=${examId}&result_date=&reopen_date=&attendance=107&examgroup=&gr_num=${grNum}`;
-                        return fetch(resultsUrl);
-                    })
-                    .then(response => {
-                        if (!response.ok) throw new Error('Error fetching results: ' + response.statusText);
-                        return response.text();
-                    })
-                    .then(resultsData => {
-                        resultsFrame.innerHTML = `<h2>Results:</h2><div>${resultsData}</div>`;
-                        resultsCache[grNum] = resultsData;
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        resultsFrame.innerText = 'Error fetching results: ' + error.message;
-                    })
-                    .finally(() => {
-                        loadingSpinner.style.display = 'none';
-                    });
-            });
+                    const resultsUrl = `https://dextroexam.com/STFRANCISB/dextro2425/Admin/school/printAllresult.php?mdm=English&std=${std}&sec=${sec}&examId=${examId}&result_date=&reopen_date=&attendance=107&examgroup=&gr_num=${grNum}`;
+                    return fetch(resultsUrl);
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Error fetching results');
+                    return response.text();
+                })
+                .then(resultsData => {
+                    resultsFrame.innerHTML = `<div>${resultsData}</div>`;
+                    resultsCache[grNum] = resultsData;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resultsFrame.innerText = 'Error fetching results: ' + error.message;
+                });
+        });
 
-            // Event listener for Forget ST Number button
-            document.getElementById('forget-st-number').addEventListener('click', () => {
-                window.location.href = "https://stfrancisb.github.io/Result/index2.html";
-            });
+        document.getElementById('forget-st-number').addEventListener('click', () => {
+            window.location.href = "https://stfrancisb.github.io/Result/index2.html";
         });
 
         function closePopup() {
@@ -171,4 +273,5 @@
         }
     </script>
 </body>
+
 </html>
