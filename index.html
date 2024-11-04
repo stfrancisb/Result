@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Results DB</title>
+    <title>Student Result DB</title>
     <meta name="description" content="View student results for 7th, 8th, and 9th standard. Secure and easy access to academic performance.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,6 +51,21 @@
             max-width: 900px;
             margin: auto;
             transition: transform .2s;
+            opacity: 0; /* Initially hidden */
+            transform: translateY(20px); /* Move down */
+            animation: fadeIn 0.5s forwards; /* Animation applied */
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1; /* Fully visible */
+                transform: translateY(0); /* Move to original position */
+            }
+        }
+
+        main.visible {
+            opacity: 1; /* Set to fully visible */
+            transform: translateY(0); /* Set to original position */
         }
 
         main:hover {
@@ -183,7 +198,7 @@
 
 <body>
     <header>
-        <h1>View Student Results</h1>
+        <h1>Student Results</h1>
         <p class="hosted-notice">This website is hosted by GitHub.</p>
     </header>
 
@@ -257,7 +272,9 @@
             const passwordInput = document.getElementById('password-input').value;
             if (passwordInput === correctPassword) {
                 document.getElementById('login-form').style.display = 'none';
-                document.getElementById('app').style.display = 'block';
+                const app = document.getElementById('app');
+                app.style.display = 'block';
+                app.classList.add('visible'); // Add class for animation
                 document.getElementById('overlay').style.display = 'block';
                 document.getElementById('warning-popup').style.display = 'block';
             } else {
