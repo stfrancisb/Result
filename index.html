@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Result DB</title>
+    <title>Student Result Viewer</title>
     <meta name="description" content="View student results for 7th, 8th, and 9th standard. Secure and easy access to academic performance.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -193,12 +193,23 @@
         .result-input-container input {
             margin: 0; /* Remove margin for consistent spacing */
         }
+
+        .source-code-link {
+            color: #ff6b81;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .source-code-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Student Results</h1>
+        <h1>View Student Results</h1>
         <p class="hosted-notice">This website is hosted by GitHub.</p>
     </header>
 
@@ -246,6 +257,7 @@
     <footer>
         <p>&copy; 2024 Doraemon. All rights reserved.</p>
         <p>Last Updated At: 03/11/2024 | 01:32 AM</p>
+        <a href="https://github.com/stfrancisb/Result" class="source-code-link" target="_blank">View Source Code</a>
     </footer>
 
     <script>
@@ -257,14 +269,14 @@
             const passwordInput = document.getElementById('password-input');
             const toggleButton = document.getElementById('toggle-password');
     
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleButton.classList.remove('fa-eye');
-                toggleButton.classList.add('fa-eye-slash');
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleButton.classList.remove("fa-eye");
+                toggleButton.classList.add("fa-eye-slash");
             } else {
-                passwordInput.type = 'password';
-                toggleButton.classList.remove('fa-eye-slash');
-                toggleButton.classList.add('fa-eye');
+                passwordInput.type = "password";
+                toggleButton.classList.remove("fa-eye-slash");
+                toggleButton.classList.add("fa-eye");
             }
         });
     
