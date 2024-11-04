@@ -191,8 +191,8 @@
 
     <main id="app">
         <div class="result-input-container">
-            <label for="gr-num">Enter Gr_num:</label>
-            <input type="text" id="gr-num" placeholder="Enter Gr_num" required pattern="[A-Za-z0-9]{5,10}" title="5 to 10 alphanumeric characters">
+            <label for="gr-num">Enter ST Number:</label>
+            <input type="text" id="gr-num" placeholder="Enter ST Number" required pattern="[A-Za-z0-9]{5,10}" title="5 to 10 alphanumeric characters">
             <button id="submit-btn" type="submit">Get Results</button>
         </div>
         <button id="forget-st-number" style="margin-top: 10px;">Forget ST Number</button>
@@ -223,7 +223,7 @@
 
     <footer>
         <p>&copy; 2024 Doraemon. All rights reserved.</p>
-        <p>Last Updated At: 31/10/2024 | 01:32 AM</p>
+        <p>Last Updated At: 03/11/2024 | 01:32 AM</p>
     </footer>
 
     <script>
@@ -273,7 +273,7 @@
     
             fetch(`https://dextroexam.com/STFRANCISB/API/profile.php?Gr_num=${grNum}`)
                 .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
+                    if (!response.ok) throw new Error('ST Number Doesn\'t Exits or Network Error');
                     return response.json();
                 })
                 .then(data => {
@@ -306,7 +306,7 @@
                             default: throw new Error(`Section ${sec} not recognized for 8th standard.`);
                         }
                     } else {
-                        throw new Error('Results are only available for 7th, 8th, and 9th standard students.');
+                        throw new Error('Results are only for 7th, 8th, and 9th standard students.');
                     }
     
                     const resultsUrl = `https://dextroexam.com/STFRANCISB/dextro2425/Admin/school/printAllresult.php?mdm=English&std=${std}&sec=${sec}&examId=${examId}&result_date=&reopen_date=&attendance=107&examgroup=&gr_num=${grNum}`;
